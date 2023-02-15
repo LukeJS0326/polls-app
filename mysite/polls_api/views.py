@@ -4,15 +4,15 @@ from polls.models import Question
 from polls_api.serializers import QuestionSerializer
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
 
-@api_view(['GET', 'POST'])
-def question_list(request):
-    if request.method == 'GET':
+class QuestionList(APIView):
+    def get(self, request):
         questions = Question.objects.all()
         serializer = QuestionSerializer(questions, many = True)
         return Response(serializer.data)
-    
-    if request.method =='POST':
+        
+    def post(self, request):
         serializer = QuestionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
