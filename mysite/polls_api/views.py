@@ -29,28 +29,28 @@ class QuestionList(APIView):
             return Response(serializer.errors) 
 
 
-# class QuestionDetailView(APIView):
+class QuestionDetail(APIView):
 
-#     def get(self, request, id):
-#         question = models.Question.objects.get(pk=id)
-#         serializer = serializers.QuestionSerializer(question)
-#         return Response(serializer.data)
+    def get(self, request, id):
+        question = Question.objects.get(pk=id)
+        serializer = QuestionSerializer(question)
+        return Response(serializer.data)
 
 
-#     def put(self, request, id):
-#         question = models.Question.objects.get(pk=id)
-#         serializer = serializers.QuestionSerializer(question, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         else:
-#             return Response(serializer.errors)
+    def put(self, request, id):
+        question = Question.objects.get(pk=id)
+        serializer = QuestionSerializer(question, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
 
     
-#     def delete(self, request, id):
-#         question = models.Question.objects.get(pk=id)
-#         question.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
+    def delete(self, request, id):
+        question = Question.objects.get(pk=id)
+        question.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 """
