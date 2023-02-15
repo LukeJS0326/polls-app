@@ -20,3 +20,9 @@ def question_list(request):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+
+@api_view()
+def question_detail(request,id):
+    question = Question.objects.get(pk=id)
+    serializer = QuestionSerializer(question)
+    return Response(serializer.data)
