@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'polls.apps.PollsConfig',
+    'polls_api.apps.PollsApiConfig',
+    'rest_framework'
 
 ]
 
