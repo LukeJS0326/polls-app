@@ -5,20 +5,20 @@ from polls_api.serializers import QuestionSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework import mixins
+from rest_framework import generics
 
-class QuestionList(APIView):
-    def get(self, request):
-        questions = Question.objects.all()
-        serializer = QuestionSerializer(questions, many = True)
-        return Response(serializer.data)
-        
-    def post(self, request):
-        serializer = QuestionSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class QuestionList(mixins.ListModelMixin,
+                  mixins.CreateModelMixin,
+                  generics.GenericAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
 class QuestionDetail(APIView):
     def get(self, request, id):
@@ -38,4 +38,8 @@ class QuestionDetail(APIView):
     def delete(self, request, id):
         question = get_object_or_404(Question, pk=id)
         question.delete()
+
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
