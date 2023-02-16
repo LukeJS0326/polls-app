@@ -8,10 +8,12 @@ from rest_framework.views import APIView
 from rest_framework import mixins
 from rest_framework import generics
 from django.contrib.auth.models import User
+from rest_framework import permissions
 
 class QuestionList(generics.ListCreateAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -19,6 +21,7 @@ class QuestionList(generics.ListCreateAPIView):
 class QuestionDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
