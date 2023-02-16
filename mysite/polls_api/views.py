@@ -3,39 +3,28 @@ from rest_framework.decorators import api_view
 from polls.models import Question
 from polls_api.serializers import QuestionSerializer
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, mixins, generics
 from rest_framework.views import APIView
 
-class QuestionList(APIView):
-    def get(self, request):
-        questions = Question.objects.all()
-        serializer = QuestionSerializer(questions, many = True)
-        return Response(serializer.data)
+class QuestionList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+    
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
         
-    def post(self, request):
-        serializer = QuestionSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
-class QuestionDetail(APIView):
-    def get(self, request, id):
-        question = get_object_or_404(Question, pk=id)
-        serializer = QuestionSerializer(question)
-        return Response(serializer.data)
+class QuestionDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+    
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
         
-    def put(self, request, id):
-        question = get_object_or_404(Question, pk=id)
-        serializer = QuestionSerializer(question, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)      
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
         
-    def delete(self, request, id):
-        question = get_object_or_404(Question, pk=id)
-        question.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
