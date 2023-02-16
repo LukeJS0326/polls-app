@@ -12,6 +12,9 @@ from django.contrib.auth.models import User
 class QuestionList(generics.ListCreateAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+    
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 class QuestionDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Question.objects.all()
