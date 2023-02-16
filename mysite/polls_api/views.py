@@ -9,6 +9,7 @@ from rest_framework import mixins
 from rest_framework import generics
 from django.contrib.auth.models import User
 from rest_framework import permissions
+from polls_api.permissions import IsOwnerOrReadOnly
 
 class QuestionList(generics.ListCreateAPIView):
     queryset = Question.objects.all()
@@ -21,7 +22,8 @@ class QuestionList(generics.ListCreateAPIView):
 class QuestionDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                      IsOwnerOrReadOnly]
 
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
