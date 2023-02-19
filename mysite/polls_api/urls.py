@@ -4,4 +4,6 @@ from .views import *
 urlpatterns = [
     path('question/', QuestionList.as_view(), name='question-list'),
     path('question/<int:pk>/', QuestionDetail.as_view(), name='question-detail'),
+    path('question/<int:pk>/choice/', ChoiceList.as_view(), name='choice-list'),
+    
 ]
