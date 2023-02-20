@@ -20,4 +20,4 @@ class UserDetail(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     
 class RegisterUser(generics.CreateAPIView):
-    serializer_class = RegisterSerializer
+    serializer_class = RegisterSerialzier
