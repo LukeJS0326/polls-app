@@ -4,9 +4,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 
 class QuestionSerializer(serializers.ModelSerializer):
-   class Meta:
+    owner = serializers.ReadOnlyField(source='owner.username')
+    class Meta:
        model = Question
-       fields = ['id', 'question_text', 'pub_date']
+       fields = ['id', 'question_text', 'pub_date', 'owner']
        
 class UserSerializer(serializers.ModelSerializer):
     questions = serializers.PrimaryKeyRelatedField(many=True, queryset=Question.objects.all())
