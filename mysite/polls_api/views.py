@@ -1,5 +1,5 @@
 from polls.models import Question
-from polls_api.serializers import *
+from polls_api.serializers import QuestionSerializer, UserSerializer, RegisterSerialzier
 from rest_framework import generics, permissions
 from django.contrib.auth.models import User
 from .permissions import IsOwnerOrReadOnly

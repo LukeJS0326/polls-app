@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import *
+from .views import QuestionList, QuestionDetail, UserList, UserDetail, RegisterUser
 
 urlpatterns = [
     path('question/', QuestionList.as_view(), name='question-list'),

@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import *
+from .views import SignupView
 
 app_name = 'polls'
 urlpatterns = [
