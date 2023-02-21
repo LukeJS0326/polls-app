@@ -11,7 +11,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = ['id', 'question_text', 'pub_date', 'owner']
        
 class UserSerializer(serializers.ModelSerializer):
-    questions = serializers.PrimaryKeyRelatedField(many=True, queryset=Question.objects.all())
+    questions = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name='question-detail')
     
     class Meta:
         model = User
