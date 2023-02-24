@@ -33,18 +33,11 @@ class ChoiceSerializer(serializers.ModelSerializer):
 
 class QuestionSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
-    choices = ChoiceSerializer(many=True)
+    choices = ChoiceSerializer(many=True, read_only=True)
     
     class Meta:
         model = Question
         fields = ['id', 'question_text', 'pub_date', 'owner', 'choices']
-    
-    def create(self, validated_data):
-        choices_data = validated_data.pop('choices')
-        question = Question.objects.create(**validated_data)
-        for choice_data in choices_data:
-            Choice.objects.create(question=question, **choice_data)
-        return question        
        
 class UserSerializer(serializers.ModelSerializer):
     questions = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name='question-detail')
